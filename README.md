@@ -1,7 +1,7 @@
-### Use TensorFlow
+# Use TensorFlow
 
-# Purpose
+### Purpose
 This repository aims to supply some samples of using TensorFlow
 
-# TF Version
+### TF Version
 1.4.1 
