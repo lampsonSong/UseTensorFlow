@@ -1,6 +1,9 @@
 # created by lampson.song @ 2018-08-01
 # show weights from frozed pb file
 
+# The used mobilenet_v2_1 model is downloaded from:
+# https://storage.googleapis.com/mobilenet_v2/checkpoints/mobilenet_v2_1.0_224.tgz
+
 import tensorflow as tf
 
 restored_graph_def = tf.GraphDef()
@@ -9,12 +12,12 @@ def show_weights(node_name):
     with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
 
-        for n in restored_graph_def.node:
-            if n.name == node_name:
-                print(n)
-                a = tf.convert_to_tensor(n.attr['value'].tensor)
-                print(a.shape)
-                sess.run(tf.Print(a,[a],summarize=9))
+        for node in restored_graph_def.node:
+            if node.name == node_name:
+                print(node)
+                weights = tf.convert_to_tensor(n.attr['value'].tensor)
+                print(weights.shape)
+                sess.run(tf.Print(weights,[weights],summarize=9)) # summarize is the number shown weights
 
 if __name__ == '__main__':
     graph = tf.get_default_graph()
