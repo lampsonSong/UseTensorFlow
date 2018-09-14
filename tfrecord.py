@@ -37,6 +37,21 @@ def create_record(records_path, data_path, img_txt):
             print "processed %d images" % cnt
     writer.close()
 
+def read_record(filename):
+    f_queue = tf.train.string_input_producer([filename])
+
+    reader = tf.TFRecordReader()
+    _, serialized_example = reader.read(f_queue)
+
+    features = tf.parse_single_example(serialized_example, features={'label':tf.FixedLenFeature([], tf.int64),
+        'img_raw':tf.FixedLenFeature([],tf.string)})
+
+    img = tf.decode_raw(features['img_raw'], tf.uint8)
+    label = tf.cast(features['label'], tf.int32)
+
+    return img, label
+
+
 # where to put the tfrecords
 records_path = 'imgs/test.tfrecords'
 
@@ -44,3 +59,5 @@ records_path = 'imgs/test.tfrecords'
 data_path = 'imgs/'
 img_txt = 'imgs/list.txt'
 create_record(records_path, data_path, img_txt)
+
+read_record(records_path)
